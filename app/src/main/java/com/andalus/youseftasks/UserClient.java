@@ -7,5 +7,5 @@ import retrofit2.http.Query;
 public interface UserClient {
 
     @GET ("weather")
-    Call<Weather> getWeather(@Query("q") String name, @Query("APPID") int key);
+    Call<Weather> getWeather(@Query("q") String name, @Query("APPID") String key);
 }

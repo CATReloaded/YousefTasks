@@ -21,32 +21,36 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        EditText city_name = findViewById(R.id.city_name);
+        final EditText city_name = findViewById(R.id.city_name);
         Button go_button = findViewById(R.id.go_button);
+
         final UserClient userClient = Client.getService();
-        final String cityName = city_name.getText().toString();
         go_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.d("VVVVVVVVVVVVV","IIIIIIIIIIIIIIIIIIII");
-                userClient.getWeather(cityName,R.string.key).enqueue(new Callback<Weather>() {
+                Log.d("VVVVVVVVVVVVV", "IIIIIIIIIIIIIIIIIIII");
+                String cityName = city_name.getText().toString();
+                userClient.getWeather(cityName, getString(R.string.key)).enqueue(new Callback<Weather>() {
+                    TextView name = findViewById(R.id.name);
+                    TextView temp = findViewById(R.id.temp);
+                    TextView country = findViewById(R.id.country);
+
                     @Override
                     public void onResponse(Call<Weather> call, Response<Weather> response) {
-                        TextView name = findViewById(R.id.name);
-                        TextView temp = findViewById(R.id.temp);
-                        TextView country = findViewById(R.id.country);
                         if (response.body() != null) {
-                            Log.d("XXXXXXXX",response.body().getName());
+                            Log.d("XXXXXXXX", response.body().getName());
                             name.setText(String.valueOf(response.body().getName()));
-                            temp.setText(String.valueOf(response.body().getMain().getTemp()));
-                            country.setText(String.valueOf(response.body().getSys().getCountry()));
+//                            temp.setText(String.valueOf(response.body().getMain().getTemp()));
+//                            country.setText(String.valueOf(response.body().getSys().getCountry()));
+                        } else {
+                            Log.d("KKKKKKKKKKKKKKK", "KKKKKKKKKKKKK");
                         }
-                        else
-                        { Log.d("KKKKKKKKKKKKKKK","KKKKKKKKKKKKK"); }
                     }
+
                     @Override
                     public void onFailure(Call<Weather> call, Throwable t) {
-                        Log.d("CCCCCCCCCCCCC","MMMMMMMMMMMMMMMMMMMMMMM"); }
+                        Log.d("CCCCCCCCCCCCC", "MMMMMMMMMMMMMMMMMMMMMMM");
+                    }
                 });
             }
         });
