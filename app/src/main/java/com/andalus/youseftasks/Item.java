@@ -8,6 +8,7 @@ public class Item {
         this.image = image;
         this.text = text;
     }
+    Item(){}
 
     int getImage() {
         return image;

@@ -15,9 +15,16 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
     private Item[] data;
     private LayoutInflater layoutInflater;
 
-    MyAdapter(Context context, Item[] data) {
+    public interface OnItemClickListener {
+        void onItemClick(Item item);
+    }
+
+    private final OnItemClickListener listener;
+
+    MyAdapter(Context context, Item[] data, OnItemClickListener listener) {
         this.data = data;
         this.layoutInflater = LayoutInflater.from(context);
+        this.listener = listener;
     }
 
     @NonNull
@@ -29,10 +36,12 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
-        String itemText = data[i].getText();
+//        String itemText = data[i].getText();
+//
+//        viewHolder.text.setText(itemText);
+//        viewHolder.image.setImageResource(data[i].getImage());
 
-        viewHolder.text.setText(itemText);
-        viewHolder.image.setImageResource(data[i].getImage());
+        viewHolder.bind(data[i]);
     }
 
     @Override
@@ -48,6 +57,17 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
             super(itemView);
             text = itemView.findViewById(R.id.item_text);
             image = itemView.findViewById(R.id.item_image);
+        }
+
+        void bind (final Item item){
+            text.setText(item.getText());
+            image.setImageResource(item.getImage());
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    listener.onItemClick(item);
+                }
+            });
         }
 
     }
