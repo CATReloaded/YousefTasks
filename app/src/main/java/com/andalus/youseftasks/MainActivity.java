@@ -1,19 +1,24 @@
 package com.andalus.youseftasks;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 public class MainActivity extends AppCompatActivity implements MyAdapter.OnItemClickListener {
 
     MyAdapter myAdapter;
+    @BindView(R.id.cells_rv) RecyclerView recyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        ButterKnife.bind(this);
 
         int itemImage = R.drawable.image;
 
@@ -23,7 +28,6 @@ public class MainActivity extends AppCompatActivity implements MyAdapter.OnItemC
 
         Item[] data = {item, item, item, item, item, item, item, item, item};
 
-        RecyclerView recyclerView = findViewById(R.id.cells_rv);
         int col = 3;
         recyclerView.setLayoutManager(new GridLayoutManager(this, col));
         myAdapter = new MyAdapter(this, data, this);
