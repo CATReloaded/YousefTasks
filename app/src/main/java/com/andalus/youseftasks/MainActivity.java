@@ -8,7 +8,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.andalus.youseftasks.weather.WeatherResponse;
 import com.edu.weatherapp.R;
+
+import org.jetbrains.annotations.NotNull;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -30,25 +33,25 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Log.d("VVVVVVVVVVVVV", "IIIIIIIIIIIIIIIIIIII");
                 String cityName = city_name.getText().toString();
-                userClient.getWeather(cityName, getString(R.string.key)).enqueue(new Callback<Weather>() {
+                userClient.getWeather(cityName, getString(R.string.key)).enqueue(new Callback<WeatherResponse>() {
                     TextView name = findViewById(R.id.name);
                     TextView temp = findViewById(R.id.temp);
                     TextView country = findViewById(R.id.country);
 
                     @Override
-                    public void onResponse(Call<Weather> call, Response<Weather> response) {
+                    public void onResponse(@NotNull Call<WeatherResponse> call, @NotNull Response<WeatherResponse> response) {
                         if (response.body() != null) {
                             Log.d("XXXXXXXX", response.body().getName());
                             name.setText(String.valueOf(response.body().getName()));
-//                            temp.setText(String.valueOf(response.body().getMain().getTemp()));
-//                            country.setText(String.valueOf(response.body().getSys().getCountry()));
+                            temp.setText(String.valueOf(response.body().getMain().getTemp()));
+                            country.setText(String.valueOf(response.body().getSys().getCountry()));
                         } else {
                             Log.d("KKKKKKKKKKKKKKK", "KKKKKKKKKKKKK");
                         }
                     }
 
                     @Override
-                    public void onFailure(Call<Weather> call, Throwable t) {
+                    public void onFailure(Call<WeatherResponse> call, Throwable t) {
                         Log.d("CCCCCCCCCCCCC", "MMMMMMMMMMMMMMMMMMMMMMM");
                     }
                 });
